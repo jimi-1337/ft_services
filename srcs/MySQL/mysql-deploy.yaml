@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mysql
+          image: mariadb
+          imagePullPolicy: Never
+          volumeMounts:
+          - mountPath: /var/lib/mysql
+            name: var-lib-mysql
+          ports:
+            - containerPort: 3306
+              name: mysql
+      volumes:
+      - name: var-lib-mysql
+        persistentVolumeClaim:
+          claimName: mysql-storage
